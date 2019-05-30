@@ -9,7 +9,7 @@ function Navigation() {
                     <Menu.Item header>ENGINE </Menu.Item>
                 </Container>
             </Menu>
-            <Container>
+            <Container style={{marginTop: 40}}>
                 <Header as='h1'>Live departures - Great Portland Street</Header>
             </Container>
         </Fragment>)

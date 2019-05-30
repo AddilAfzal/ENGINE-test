@@ -10,7 +10,9 @@ function Platform(props){
     return (
         <Segment>
             <Header as='h3'>{platformName}</Header>
-            {orderedDepartures.map(x => <Departure {...x}/>)}
+            <div>
+                {orderedDepartures.map(x => <Departure {...x}/>)}
+            </div>
         </Segment>
     )
 }

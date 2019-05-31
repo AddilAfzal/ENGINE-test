@@ -10,7 +10,7 @@ function Navigation() {
                 </Container>
             </Menu>
             <Container style={{marginTop: 40}}>
-                <Header as='h1'>Live departures - Great Portland Street</Header>
+                <Header as='h1'>Live departures - Great Portland St</Header>
             </Container>
         </Fragment>)
 };

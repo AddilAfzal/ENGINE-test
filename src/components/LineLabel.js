@@ -31,7 +31,7 @@ function getRGBComponents(color) {
 }
 
 function LineLabel(props){
-    const {id, name, showStatus} = props;
+    const {id, name} = props;
     const background = colours[id];
     return (
         <Label style={{background, color: idealTextColor(background)}} horizontal>

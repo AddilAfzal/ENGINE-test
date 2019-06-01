@@ -1,7 +1,7 @@
 import React, {Fragment, Component} from 'react';
 import _ from 'lodash';
 import Platform from "./Platform";
-import {Grid, Message, Segment} from "semantic-ui-react";
+import {Container, Grid, Header, Image, Segment} from "semantic-ui-react";
 import Moment from "react-moment";
 class Platforms extends Component {
 
@@ -50,11 +50,21 @@ class Platforms extends Component {
 
             return (
                 <Fragment>
-                    <Message>
-                        <p>
-                            <b>Last updated</b>: <Moment format="HH:mm:ss">{lastUpdated}</Moment>
-                        </p>
-                    </Message>
+                    <div>
+                        <Container style={{marginTop: 40}}>
+                            <Header as='h1' style={{marginBottom: 20}}>Live departures</Header>
+                            <Grid>
+                                <Grid.Column floated='left' width={5}>
+                                    <Header as='h3' style={{marginBottom: 15}}><Image src="./Underground.svg" style={{marginTop: -3}}/>
+                                        Great Portland Street
+                                    </Header>
+                                </Grid.Column>
+                                <Grid.Column floated='right' width={3} style={{textAlign: 'right', marginTop: 5}}>
+                                    <b>Last updated</b>: <Moment format="HH:mm:ss">{lastUpdated}</Moment>
+                                </Grid.Column>
+                            </Grid>
+                        </Container>
+                    </div>
 
                     <Grid stackable columns={Object.keys(platforms).length}>
                         {body}

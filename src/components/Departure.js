@@ -1,5 +1,5 @@
-import React from 'react';
-import {Button, Label, Segment} from "semantic-ui-react";
+import React, {Fragment} from 'react';
+import {Label, Segment} from "semantic-ui-react";
 import Moment from 'react-moment';
 import 'moment-timezone';
 
@@ -14,29 +14,37 @@ class Platform extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            expanded: false
+        }
     }
 
     // Function to replace the message thats shown when there is less than a minute till arrival.
     // "few seconds" becomes "Now"
     customFilter = (d) => {
-        console.log(d);
         return (d.includes("seconds")) ? "Now" : d
     };
 
+    handleToggle = () => {
+        this.setState({expanded: !this.state.expanded});
+    };
 
     render() {
-        const {lineName, lineId, towards, expectedArrival, vehicleId} = this.props;
+        const {expanded} = this.state;
+        const {lineName, lineId, towards, expectedArrival, vehicleId, currentLocation} = this.props;
 
         return (
-            <Segment vertical key={vehicleId}>
-                <Label style={{background: lineColours[lineId], color: '#fff'}} horizontal>
-                    {lineName}
-                </Label> {towards}
+            <Segment vertical key={vehicleId} onClick={this.handleToggle}>
+                    <Label style={{background: lineColours[lineId], color: '#fff'}} horizontal>
+                        {lineName}
+                    </Label> {towards}
 
-                <div style={{float: 'right'}}>
-                    <Moment filter={this.customFilter} fromNow
-                            ago>{expectedArrival}</Moment> (<Moment format={'HH:mm'}>{expectedArrival}</Moment> )
-                </div>
+                    <div style={{float: 'right'}}>
+                        <Moment filter={this.customFilter} fromNow ago>{expectedArrival}</Moment> (<Moment
+                        format={'HH:mm'}>{expectedArrival}</Moment> )
+                    </div>
+                {expanded && <Segment onClick={ (e) => e.stopPropagation()}> {currentLocation}</Segment>}
+
 
             </Segment>
         )

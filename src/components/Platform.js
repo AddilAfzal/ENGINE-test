@@ -8,12 +8,14 @@ function Platform(props){
     const orderedDepartures = _.orderBy(departures, 'expectedArrival');
 
     return (
-        <Segment>
-            <Header as='h3'>{platformName}</Header>
-            <div>
-                {orderedDepartures.map(x => <Departure {...x}/>)}
-            </div>
-        </Segment>
+        <div>
+            <Header as='h3' attached='top'>{platformName}</Header>
+            <Segment attached>
+                <div>
+                    {orderedDepartures.map(x => <Departure {...x}/>)}
+                </div>
+            </Segment>
+        </div>
     )
 }
 

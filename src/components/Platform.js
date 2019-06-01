@@ -4,7 +4,7 @@ import Departure from "./Departure";
 import _ from 'lodash';
 
 function Platform(props){
-    const {platformName, departures, serviceStatusData} = props;
+    const {platformName, departures} = props;
     const orderedDepartures = _.orderBy(departures, 'expectedArrival');
 
     return (
@@ -12,7 +12,7 @@ function Platform(props){
             <Header as='h3' attached='top'>{platformName}</Header>
             <Segment attached>
                 <div>
-                    {orderedDepartures.map(x => <Departure {...x} serviceStatusData={serviceStatusData} />)}
+                    {orderedDepartures.map(x => <Departure {...x}/>)}
                 </div>
             </Segment>
         </div>

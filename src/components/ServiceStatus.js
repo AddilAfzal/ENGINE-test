@@ -1,14 +1,8 @@
 import React, {Fragment} from 'react';
-import {Label, Segment} from "semantic-ui-react";
-import Moment from 'react-moment';
+import {Header, Segment} from "semantic-ui-react";
 import 'moment-timezone';
 import _ from 'lodash';
-
-const lineColours = {
-    'circle': '#ffcd00',
-    'hammersmith-city': '#e297b1',
-    'metropolitan': '#800057',
-};
+import LineDetails from "./LineDetails";
 
 
 class ServiceStatus extends React.Component {
@@ -35,6 +29,32 @@ class ServiceStatus extends React.Component {
         const url = "https://api.tfl.gov.uk/line/mode/tube/status";
         return await fetch(url).then(x => x.json());
     };
+
+    getLine = (lineId) => {
+        const {data} = this.state;
+        return _.find(data, ['id', lineId]);
+    };
+
+    render() {
+        const {lineIds} = this.props;
+        const {data} = this.state;
+
+        if(lineIds && data) {
+            const lines = lineIds.map(lineId => this.getLine(lineId));
+
+            return (
+                <Fragment>
+                    <Header as='h3' attached='top'>Service Status</Header>
+                    <Segment attached>
+                        {lines.map(x => <LineDetails line={x}/> )}
+                    </Segment>
+                </Fragment>
+            )
+        } else {
+            return <Segment loading={true}/>
+        }
+
+    }
 }
 
 export default ServiceStatus;

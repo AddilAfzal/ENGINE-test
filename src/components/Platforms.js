@@ -1,8 +1,9 @@
 import React, {Fragment, Component} from 'react';
 import _ from 'lodash';
 import Platform from "./Platform";
-import {Container, Grid, Header, Image, Segment} from "semantic-ui-react";
+import {Container, Divider, Grid, Header, Image, Segment} from "semantic-ui-react";
 import Moment from "react-moment";
+import ServiceStatus from "./ServiceStatus";
 
 class Platforms extends Component {
 
@@ -10,8 +11,8 @@ class Platforms extends Component {
         super(props);
 
         this.state = {
+            response: null,
             platforms: null,
-            serviceStatusData: null,
             lastUpdated: null,
         }
     }
@@ -19,7 +20,6 @@ class Platforms extends Component {
     componentDidMount = async () => {
         // One the component has mounted, it will fetch data.
         this.updateResults();
-        this.updateServiceStatus();
     };
 
     updateResults = async () => {
@@ -27,7 +27,7 @@ class Platforms extends Component {
         const platforms = _.groupBy(response, 'platformName');
 
         // Update the data stored in the state, replacing the timestamp and queueing the next API call.
-        this.setState({platforms, lastUpdated: new Date().getTime()},
+        this.setState({response, platforms, lastUpdated: new Date().getTime()},
             () => setTimeout(this.updateResults, 20000));
     };
 
@@ -38,27 +38,16 @@ class Platforms extends Component {
         return await fetch(url).then(x => x.json());
     };
 
-    updateServiceStatus = async () => {
-        const response = await this.fetchServiceStatus();
-        this.setState({serviceStatusData: response},
-            () => setTimeout(this.updateServiceStatus, 60000));
-    };
-
-    fetchServiceStatus = async () => {
-        const url = "https://api.tfl.gov.uk/line/mode/tube/status";
-        return await fetch(url).then(x => x.json());
-    };
-
     render() {
-        const {platforms, lastUpdated, serviceStatusData} = this.state;
+        const {platforms, response, lastUpdated} = this.state;
+        const lineIds = _.uniq(_.map(response, 'lineId'));
 
-        if (platforms && serviceStatusData) {
+        if (platforms) {
             const body = Object.keys(platforms)
                 .map((p, key) =>
                     <Grid.Column>
                         <Platform key={key} platformName={p}
-                                  departures={platforms[p]}
-                                  serviceStatusData={serviceStatusData} />
+                                  departures={platforms[p]} />
                     </Grid.Column>);
 
             return (
@@ -66,9 +55,9 @@ class Platforms extends Component {
                     <div>
                         <Container style={{marginTop: 40}}>
                             <Header as='h1' style={{marginBottom: 20}}>Live departures</Header>
-                            <Grid>
+                            <Grid style={{marginBottom: -30}}>
                                 <Grid.Column floated='left' width={5}>
-                                    <Header as='h3' style={{marginBottom: 15}}><Image src="./Underground.svg" style={{marginTop: -3}}/>
+                                    <Header as='h3' style={{marginBottom: 15}}><Image src="./Underground.svg" style={{marginTop: -6, width: 19}}/>
                                         Great Portland Street
                                     </Header>
                                 </Grid.Column>
@@ -78,6 +67,9 @@ class Platforms extends Component {
                             </Grid>
                         </Container>
                     </div>
+
+                    <ServiceStatus lineIds={lineIds}/>
+                    <Divider/>
 
                     <Grid stackable columns={Object.keys(platforms).length}>
                         {body}

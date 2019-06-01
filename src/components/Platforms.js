@@ -3,6 +3,7 @@ import _ from 'lodash';
 import Platform from "./Platform";
 import {Container, Grid, Header, Image, Segment} from "semantic-ui-react";
 import Moment from "react-moment";
+
 class Platforms extends Component {
 
     constructor(props) {
@@ -10,17 +11,19 @@ class Platforms extends Component {
 
         this.state = {
             platforms: null,
+            serviceStatusData: null,
             lastUpdated: null,
         }
     }
 
     componentDidMount = async () => {
-        // One the component has mounted, it will fetch the data.
+        // One the component has mounted, it will fetch data.
         this.updateResults();
+        this.updateServiceStatus();
     };
 
     updateResults = async () => {
-        const response = await this.fetchData();
+        const response = await this.fetchArrivalData();
         const platforms = _.groupBy(response, 'platformName');
 
         // Update the data stored in the state, replacing the timestamp and queueing the next API call.
@@ -28,24 +31,34 @@ class Platforms extends Component {
             () => setTimeout(this.updateResults, 20000));
     };
 
-
-    fetchData = async () => {
+    fetchArrivalData = async () => {
         const {stationNaptanId} = this.props;
         const url = "https://api.tfl.gov.uk/StopPoint/" + stationNaptanId + "/arrivals";
 
         return await fetch(url).then(x => x.json());
     };
 
+    updateServiceStatus = async () => {
+        const response = await this.fetchServiceStatus();
+        this.setState({serviceStatusData: response},
+            () => setTimeout(this.updateServiceStatus, 60000));
+    };
+
+    fetchServiceStatus = async () => {
+        const url = "https://api.tfl.gov.uk/line/mode/tube/status";
+        return await fetch(url).then(x => x.json());
+    };
 
     render() {
-        const {platforms, lastUpdated} = this.state;
+        const {platforms, lastUpdated, serviceStatusData} = this.state;
 
-        if (platforms) {
+        if (platforms && serviceStatusData) {
             const body = Object.keys(platforms)
                 .map((p, key) =>
                     <Grid.Column>
                         <Platform key={key} platformName={p}
-                                  departures={platforms[p]}/>
+                                  departures={platforms[p]}
+                                  serviceStatusData={serviceStatusData} />
                     </Grid.Column>);
 
             return (

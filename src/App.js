@@ -11,6 +11,7 @@ class App extends Component {
                 <Navigation/>
                 <br/>
                 <Container>
+                    {/*<ServiceStatus />*/}
                     <Platforms stationNaptanId={'940GZZLUGPS'}/>
                 </Container>
             </Fragment>

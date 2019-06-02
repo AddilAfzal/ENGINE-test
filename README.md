@@ -18,10 +18,11 @@ The task was to create a web application that would display live arrival times f
  - Yarn
  
  # Libraries
- The libraries used to accomlish the task:
+ The libraries used to accomplish the task:
  - ReactJS
  - Semantic UI
  - Lodash
+ - Moment
   
 # Running the code 
 Clone the repository.
@@ -44,4 +45,4 @@ Start the server.
 
 Once run, the front-end should be accessible at [http://localhost:3000/](http://localhost:3001/)
 
-
+A demo is also available at https://addilafzal.com/ENGINE/

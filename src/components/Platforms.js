@@ -47,14 +47,14 @@ class Platforms extends Component {
                 .map((p, key) =>
                     <Grid.Column>
                         <Platform key={key} platformName={p}
-                                  departures={platforms[p]} />
+                                  arrivals={platforms[p]} />
                     </Grid.Column>);
 
             return (
                 <Fragment>
                     <div>
                         <Container style={{marginTop: 40}}>
-                            <Header as='h1' style={{marginBottom: 20}}>Live departures</Header>
+                            <Header as='h1' style={{marginBottom: 20}}>Live arrivals</Header>
                             <Grid style={{marginBottom: -30}}>
                                 <Grid.Column floated='left' width={5}>
                                     <Header as='h3' style={{marginBottom: 15}}><Image src="./Underground.svg" style={{marginTop: -6, width: 19}}/>

@@ -20,17 +20,20 @@ class ServiceStatus extends React.Component {
     }
 
     updateServiceStatus = async () => {
+        // This method is called every minute, to refresh the service status data.
         const data = await this.fetchServiceStatus();
         this.setState({data},
             () => setTimeout(this.updateServiceStatus, 60000));
     };
 
     fetchServiceStatus = async () => {
+        // Perform an API call.
         const url = "https://api.tfl.gov.uk/line/mode/tube/status";
         return await fetch(url).then(x => x.json());
     };
 
     getLine = (lineId) => {
+        // Extract and return data for a given lineId.
         const {data} = this.state;
         return _.find(data, ['id', lineId]);
     };
@@ -39,6 +42,7 @@ class ServiceStatus extends React.Component {
         const {lineIds} = this.props;
         const {data} = this.state;
 
+        // Only render if there exists data.
         if(lineIds && data) {
             const lines = lineIds.map(lineId => this.getLine(lineId));
 

@@ -33,6 +33,9 @@ function getRGBComponents(color) {
 function LineLabel(props){
     const {id, name} = props;
     const background = colours[id];
+
+    // The label will have foreground text that is either white or black, depending on the background.
+    // The method above is used to establish this optimal colour.
     return (
         <Label style={{background, color: idealTextColor(background)}} horizontal>
             {name}

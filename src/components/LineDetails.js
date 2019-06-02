@@ -8,11 +8,14 @@ function LineDetails(props){
     const status = line.lineStatuses[0].statusSeverityDescription;
     let statusColour = null;
 
+    // Assign a colour to each service status
     switch (status) {
         case 'Good Service':
+            // The line is operating normally.
             statusColour = 'green';
             break;
         default:
+            // There is an issue with the line. There would be no service on the entire line or partial, or delays.
             statusColour = 'orange';
     }
     
